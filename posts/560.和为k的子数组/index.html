@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.138.0">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="" />
+  <meta property="og:url" content="http://localhost:1313/posts/560.%E5%92%8C%E4%B8%BAk%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/" />
+  <link rel="canonical" href="http://localhost:1313/posts/560.%E5%92%8C%E4%B8%BAk%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/" /><link rel="alternate" type="application/atom+xml" href="http://localhost:1313/index.xml" title="Windseeker&#39;s Blog">
+
+  <script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "http:\/\/localhost:1313\/"
+      },
+      "articleSection" : "posts",
+      "name" : "560.和为K的子数组",
+      "headline" : "560.和为K的子数组",
+      "description" : "方法一：暴力法 两次遍历所有的字串，判断字串是否符合条件\nCode func subarraySum(nums []int, k int) (res int) { for left := range nums { sum := 0 for right := left; right \u0026lt; len(nums); right\u002b\u002b { sum \u002b= nums[right] if sum == k { res\u002b\u002b } } } return res } 复杂度分析 定义nums的长度为N\n时间复杂度 两次循环需要执行O(N*N) 总时间复杂度为O(N^2) 空间复杂度 空间复杂度为O(1)\n方法二：前缀和剪枝 如果nums=[0,0,0],k=0.会发现内层循环存在重复计算，可以通过前缀和进行剪枝，即当左端点下标为0时，[0],[0,0],[0,0,0]的前缀和一致，在找到第一个右端点时直接退出内层循环\n计算数组前缀和，并保存相同前缀和的计数 外层遍历字串左端点，内层遍历字串右端点 使用前缀和计算字串的和 和等于k 累加当前前缀和相同计数 结束内层循环 和不等于k，继续内层遍历 内层遍历结束时 将左端点的前缀和相同计数减1 继续外层遍历 为什么内层遍历结束要将左端点的前缀和相同计数减1\n为了防止重复计算，nums=[0,0,0],k=0为例，当左端点下标为1时，应该只统计坐标为[1],[1,2]的字串，但是当前前缀和等于0的下标有0，1，2，所以要在每一次内层循环结束后将当前左端点的前缀和相同计数减1保证不会重复计算。\nCode func subarraySum(nums []int, k int) (res int) { sumArray := make([]int, len(nums)\u002b1) sameSumIndex := make(map[int]int) for idx, num := range nums { sumArray[idx\u002b1] = sumArray[idx] \u002b num sameSumIndex[sumArray[idx\u002b1]]\u002b\u002b } for left := range nums { for right := left; right \u0026lt; len(nums); right\u002b\u002b { subSum := sumArray[right\u002b1] - sumArray[left] if subSum == k { res \u002b= sameSumIndex[sumArray[right\u002b1]] break } } sameSumIndex[sumArray[left\u002b1]]-- } return res } 复杂度分析 定义nums的长度为N\n",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2024",
+      "datePublished": "2024-11-13 14:27:27 \u002b0800 CST",
+      "dateModified" : "2024-11-13 14:27:27 \u002b0800 CST",
+      "url" : "http:\/\/localhost:1313\/posts\/560.%E5%92%8C%E4%B8%BAk%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84\/",
+      "keywords" : [ "prefix_sum","hash_table", ]
+  }
+</script>
+<title>560.和为K的子数组</title>
+  <meta property="og:title" content="560.和为K的子数组" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="方法一：暴力法 两次遍历所有的字串，判断字串是否符合条件
+Code func subarraySum(nums []int, k int) (res int) { for left := range nums { sum := 0 for right := left; right &lt; len(nums); right&#43;&#43; { sum &#43;= nums[right] if sum == k { res&#43;&#43; } } } return res } 复杂度分析 定义nums的长度为N
+时间复杂度 两次循环需要执行O(N*N) 总时间复杂度为O(N^2) 空间复杂度 空间复杂度为O(1)
+方法二：前缀和剪枝 如果nums=[0,0,0],k=0.会发现内层循环存在重复计算，可以通过前缀和进行剪枝，即当左端点下标为0时，[0],[0,0],[0,0,0]的前缀和一致，在找到第一个右端点时直接退出内层循环
+计算数组前缀和，并保存相同前缀和的计数 外层遍历字串左端点，内层遍历字串右端点 使用前缀和计算字串的和 和等于k 累加当前前缀和相同计数 结束内层循环 和不等于k，继续内层遍历 内层遍历结束时 将左端点的前缀和相同计数减1 继续外层遍历 为什么内层遍历结束要将左端点的前缀和相同计数减1
+为了防止重复计算，nums=[0,0,0],k=0为例，当左端点下标为1时，应该只统计坐标为[1],[1,2]的字串，但是当前前缀和等于0的下标有0，1，2，所以要在每一次内层循环结束后将当前左端点的前缀和相同计数减1保证不会重复计算。
+Code func subarraySum(nums []int, k int) (res int) { sumArray := make([]int, len(nums)&#43;1) sameSumIndex := make(map[int]int) for idx, num := range nums { sumArray[idx&#43;1] = sumArray[idx] &#43; num sameSumIndex[sumArray[idx&#43;1]]&#43;&#43; } for left := range nums { for right := left; right &lt; len(nums); right&#43;&#43; { subSum := sumArray[right&#43;1] - sumArray[left] if subSum == k { res &#43;= sameSumIndex[sumArray[right&#43;1]] break } } sameSumIndex[sumArray[left&#43;1]]-- } return res } 复杂度分析 定义nums的长度为N
+" />
+  <meta name="description" content="方法一：暴力法 两次遍历所有的字串，判断字串是否符合条件
+Code func subarraySum(nums []int, k int) (res int) { for left := range nums { sum := 0 for right := left; right &lt; len(nums); right&#43;&#43; { sum &#43;= nums[right] if sum == k { res&#43;&#43; } } } return res } 复杂度分析 定义nums的长度为N
+时间复杂度 两次循环需要执行O(N*N) 总时间复杂度为O(N^2) 空间复杂度 空间复杂度为O(1)
+方法二：前缀和剪枝 如果nums=[0,0,0],k=0.会发现内层循环存在重复计算，可以通过前缀和进行剪枝，即当左端点下标为0时，[0],[0,0],[0,0,0]的前缀和一致，在找到第一个右端点时直接退出内层循环
+计算数组前缀和，并保存相同前缀和的计数 外层遍历字串左端点，内层遍历字串右端点 使用前缀和计算字串的和 和等于k 累加当前前缀和相同计数 结束内层循环 和不等于k，继续内层遍历 内层遍历结束时 将左端点的前缀和相同计数减1 继续外层遍历 为什么内层遍历结束要将左端点的前缀和相同计数减1
+为了防止重复计算，nums=[0,0,0],k=0为例，当左端点下标为1时，应该只统计坐标为[1],[1,2]的字串，但是当前前缀和等于0的下标有0，1，2，所以要在每一次内层循环结束后将当前左端点的前缀和相同计数减1保证不会重复计算。
+Code func subarraySum(nums []int, k int) (res int) { sumArray := make([]int, len(nums)&#43;1) sameSumIndex := make(map[int]int) for idx, num := range nums { sumArray[idx&#43;1] = sumArray[idx] &#43; num sameSumIndex[sumArray[idx&#43;1]]&#43;&#43; } for left := range nums { for right := left; right &lt; len(nums); right&#43;&#43; { subSum := sumArray[right&#43;1] - sumArray[left] if subSum == k { res &#43;= sameSumIndex[sumArray[right&#43;1]] break } } sameSumIndex[sumArray[left&#43;1]]-- } return res } 复杂度分析 定义nums的长度为N
+" />
+  <meta property="og:locale" content="en-us" /><meta property="og:image" content="" />
+  
+
+  
+    <style>body{font-family:bree serif,sans-serif;-webkit-font-smoothing:antialiased;margin:0 20px}article{max-width:800px;margin-left:auto;margin-right:auto}a{color:#000;text-decoration:none}a:hover{font-weight:600;text-decoration:underline}.post-ads{margin:50px 0}.markdown-body{font-size:18px;max-width:100%}.markdown-body a{text-decoration:underline;text-decoration-color:#000}.markdown-body blockquote{margin:0;padding:0 1em;color:#57606a;border-left:.25em solid #d0d7de}.markdown-body pre{padding:16px;overflow:auto;border-radius:10px}.markdown-body code{padding:.2em .4em;font-size:85%;background-color:#f6f8fa;border-radius:6px}.markdown-body pre>code{padding:0;font-size:100%;background-color:inherit;border:0}.Chinese .markdown-body{line-height:200%}.site-date-catalog{font-size:2rem}.header-title{font-size:2rem;font-weight:700;margin-top:32px;font-family:bungee shade,sans-serif}.header-title a{text-decoration:none}.header-subtitle{color:#666}.header-items{margin:10px 0}.header-item{margin:0 5px}.header-line{width:100%;border-width:2px;border-color:#482936;border-style:solid none none none}.lang-switch{font-weight:600}#posts-list{min-height:600px}.posts-line{font-size:1.2rem;margin:12px 0}.posts-categories{font-size:.8rem;margin:auto;text-align:center}.posts-category{padding:3px 0;border:#000 2px solid;border-radius:5px}.site-footer{margin-top:50px}.site-footer-item{margin-right:12px}.post-header{margin-bottom:50px}.post-title{font-size:2rem;font-weight:600}.post-tags{display:inline;font-weight:600;padding:2px 5px;margin-right:6px;border:#000 2px solid;border-radius:5px}.post-date{font-weight:800;font-style:italic}.post-author{float:right;font-weight:600}.page-content{min-height:60%}.post-content{margin-bottom:50px}.post-content p{hyphens:auto;line-height:1.8;text-justify:ideographic;margin-bottom:1em}.post-content img{max-width:100%;display:block;margin-right:auto;margin-top:6px}.post-content .post-gallery{display:flex;flex-wrap:wrap;gap:6px}.post-content .post-gallery img{margin-right:auto;margin-top:auto;width:calc(50% - 3px)}.related-content{border-width:3px;border-style:solid;border-color:#000;padding:0 10px;margin-bottom:50px;margin-top:100px}.related-content li{margin:5px 0}.taxonomy-term{font-size:3rem}.gallery-img{text-align:center}.gallery-img span{text-align:center}.gallery-img-desc{font-size:.8em;font-weight:800}#disqus_thread{position:relative}#disqus_thread:after{content:"";display:block;height:55px;width:100%;position:absolute;bottom:0;background:#fff}@media screen and (max-width:600px){.header-title,.header-subtitle,.header-items{}.posts-line{font-size:16px}.markdown-body{font-size:16px}.post-title{font-size:2rem}.post-content p{letter-spacing:.05em}.post-content .post-gallery img{width:100%}}@media screen and (max-width:48em){.posts-category{display:none}}</style>
+  
+  
+    <style>.container,.container-fluid{margin-right:auto;margin-left:auto}.container-fluid{padding-right:2rem;padding-left:2rem}.row{box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:0;-ms-flex:0 1 auto;flex:initial;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-.5rem;margin-left:-.5rem}.row.reverse{-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse}.col.reverse{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.col-xs,.col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-offset-0,.col-xs-offset-1,.col-xs-offset-10,.col-xs-offset-11,.col-xs-offset-12,.col-xs-offset-2,.col-xs-offset-3,.col-xs-offset-4,.col-xs-offset-5,.col-xs-offset-6,.col-xs-offset-7,.col-xs-offset-8,.col-xs-offset-9{box-sizing:border-box;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:none;padding-right:.5rem;padding-left:.5rem}.col-xs{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-ms-flex-preferred-size:0;flex-basis:0;max-width:100%}.col-xs-1{-ms-flex-preferred-size:8.33333333%;flex-basis:8.33333333%;max-width:8.33333333%}.col-xs-2{-ms-flex-preferred-size:16.66666667%;flex-basis:16.66666667%;max-width:16.66666667%}.col-xs-3{-ms-flex-preferred-size:25%;flex-basis:25%;max-width:25%}.col-xs-4{-ms-flex-preferred-size:33.33333333%;flex-basis:33.33333333%;max-width:33.33333333%}.col-xs-5{-ms-flex-preferred-size:41.66666667%;flex-basis:41.66666667%;max-width:41.66666667%}.col-xs-6{-ms-flex-preferred-size:50%;flex-basis:50%;max-width:50%}.col-xs-7{-ms-flex-preferred-size:58.33333333%;flex-basis:58.33333333%;max-width:58.33333333%}.col-xs-8{-ms-flex-preferred-size:66.66666667%;flex-basis:66.66666667%;max-width:66.66666667%}.col-xs-9{-ms-flex-preferred-size:75%;flex-basis:75%;max-width:75%}.col-xs-10{-ms-flex-preferred-size:83.33333333%;flex-basis:83.33333333%;max-width:83.33333333%}.col-xs-11{-ms-flex-preferred-size:91.66666667%;flex-basis:91.66666667%;max-width:91.66666667%}.col-xs-12{-ms-flex-preferred-size:100%;flex-basis:100%;max-width:100%}.col-xs-offset-0{margin-left:0}.col-xs-offset-1{margin-left:8.33333333%}.col-xs-offset-2{margin-left:16.66666667%}.col-xs-offset-3{margin-left:25%}.col-xs-offset-4{margin-left:33.33333333%}.col-xs-offset-5{margin-left:41.66666667%}.col-xs-offset-6{margin-left:50%}.col-xs-offset-7{margin-left:58.33333333%}.col-xs-offset-8{margin-left:66.66666667%}.col-xs-offset-9{margin-left:75%}.col-xs-offset-10{margin-left:83.33333333%}.col-xs-offset-11{margin-left:91.66666667%}.start-xs{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:start}.center-xs{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}.end-xs{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:end}.top-xs{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.middle-xs{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.bottom-xs{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.around-xs{-ms-flex-pack:distribute;justify-content:space-around}.between-xs{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.first-xs{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}.last-xs{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}@media only screen and (min-width:48em){.container{width:49rem}.col-sm,.col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-sm-offset-0,.col-sm-offset-1,.col-sm-offset-10,.col-sm-offset-11,.col-sm-offset-12,.col-sm-offset-2,.col-sm-offset-3,.col-sm-offset-4,.col-sm-offset-5,.col-sm-offset-6,.col-sm-offset-7,.col-sm-offset-8,.col-sm-offset-9{box-sizing:border-box;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:none;padding-right:.5rem;padding-left:.5rem}.col-sm{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-ms-flex-preferred-size:0;flex-basis:0;max-width:100%}.col-sm-1{-ms-flex-preferred-size:8.33333333%;flex-basis:8.33333333%;max-width:8.33333333%}.col-sm-2{-ms-flex-preferred-size:16.66666667%;flex-basis:16.66666667%;max-width:16.66666667%}.col-sm-3{-ms-flex-preferred-size:25%;flex-basis:25%;max-width:25%}.col-sm-4{-ms-flex-preferred-size:33.33333333%;flex-basis:33.33333333%;max-width:33.33333333%}.col-sm-5{-ms-flex-preferred-size:41.66666667%;flex-basis:41.66666667%;max-width:41.66666667%}.col-sm-6{-ms-flex-preferred-size:50%;flex-basis:50%;max-width:50%}.col-sm-7{-ms-flex-preferred-size:58.33333333%;flex-basis:58.33333333%;max-width:58.33333333%}.col-sm-8{-ms-flex-preferred-size:66.66666667%;flex-basis:66.66666667%;max-width:66.66666667%}.col-sm-9{-ms-flex-preferred-size:75%;flex-basis:75%;max-width:75%}.col-sm-10{-ms-flex-preferred-size:83.33333333%;flex-basis:83.33333333%;max-width:83.33333333%}.col-sm-11{-ms-flex-preferred-size:91.66666667%;flex-basis:91.66666667%;max-width:91.66666667%}.col-sm-12{-ms-flex-preferred-size:100%;flex-basis:100%;max-width:100%}.col-sm-offset-0{margin-left:0}.col-sm-offset-1{margin-left:8.33333333%}.col-sm-offset-2{margin-left:16.66666667%}.col-sm-offset-3{margin-left:25%}.col-sm-offset-4{margin-left:33.33333333%}.col-sm-offset-5{margin-left:41.66666667%}.col-sm-offset-6{margin-left:50%}.col-sm-offset-7{margin-left:58.33333333%}.col-sm-offset-8{margin-left:66.66666667%}.col-sm-offset-9{margin-left:75%}.col-sm-offset-10{margin-left:83.33333333%}.col-sm-offset-11{margin-left:91.66666667%}.start-sm{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:start}.center-sm{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}.end-sm{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:end}.top-sm{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.middle-sm{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.bottom-sm{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.around-sm{-ms-flex-pack:distribute;justify-content:space-around}.between-sm{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.first-sm{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}.last-sm{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}}@media only screen and (min-width:64em){.container{width:65rem}.col-md,.col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9,.col-md-offset-0,.col-md-offset-1,.col-md-offset-10,.col-md-offset-11,.col-md-offset-12,.col-md-offset-2,.col-md-offset-3,.col-md-offset-4,.col-md-offset-5,.col-md-offset-6,.col-md-offset-7,.col-md-offset-8,.col-md-offset-9{box-sizing:border-box;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:none;padding-right:.5rem;padding-left:.5rem}.col-md{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-ms-flex-preferred-size:0;flex-basis:0;max-width:100%}.col-md-1{-ms-flex-preferred-size:8.33333333%;flex-basis:8.33333333%;max-width:8.33333333%}.col-md-2{-ms-flex-preferred-size:16.66666667%;flex-basis:16.66666667%;max-width:16.66666667%}.col-md-3{-ms-flex-preferred-size:25%;flex-basis:25%;max-width:25%}.col-md-4{-ms-flex-preferred-size:33.33333333%;flex-basis:33.33333333%;max-width:33.33333333%}.col-md-5{-ms-flex-preferred-size:41.66666667%;flex-basis:41.66666667%;max-width:41.66666667%}.col-md-6{-ms-flex-preferred-size:50%;flex-basis:50%;max-width:50%}.col-md-7{-ms-flex-preferred-size:58.33333333%;flex-basis:58.33333333%;max-width:58.33333333%}.col-md-8{-ms-flex-preferred-size:66.66666667%;flex-basis:66.66666667%;max-width:66.66666667%}.col-md-9{-ms-flex-preferred-size:75%;flex-basis:75%;max-width:75%}.col-md-10{-ms-flex-preferred-size:83.33333333%;flex-basis:83.33333333%;max-width:83.33333333%}.col-md-11{-ms-flex-preferred-size:91.66666667%;flex-basis:91.66666667%;max-width:91.66666667%}.col-md-12{-ms-flex-preferred-size:100%;flex-basis:100%;max-width:100%}.col-md-offset-0{margin-left:0}.col-md-offset-1{margin-left:8.33333333%}.col-md-offset-2{margin-left:16.66666667%}.col-md-offset-3{margin-left:25%}.col-md-offset-4{margin-left:33.33333333%}.col-md-offset-5{margin-left:41.66666667%}.col-md-offset-6{margin-left:50%}.col-md-offset-7{margin-left:58.33333333%}.col-md-offset-8{margin-left:66.66666667%}.col-md-offset-9{margin-left:75%}.col-md-offset-10{margin-left:83.33333333%}.col-md-offset-11{margin-left:91.66666667%}.start-md{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:start}.center-md{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}.end-md{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:end}.top-md{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.middle-md{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.bottom-md{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.around-md{-ms-flex-pack:distribute;justify-content:space-around}.between-md{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.first-md{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}.last-md{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}}@media only screen and (min-width:75em){.container{width:76rem}.col-lg,.col-lg-1,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-lg-offset-0,.col-lg-offset-1,.col-lg-offset-10,.col-lg-offset-11,.col-lg-offset-12,.col-lg-offset-2,.col-lg-offset-3,.col-lg-offset-4,.col-lg-offset-5,.col-lg-offset-6,.col-lg-offset-7,.col-lg-offset-8,.col-lg-offset-9{box-sizing:border-box;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:none;padding-right:.5rem;padding-left:.5rem}.col-lg{-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-ms-flex-preferred-size:0;flex-basis:0;max-width:100%}.col-lg-1{-ms-flex-preferred-size:8.33333333%;flex-basis:8.33333333%;max-width:8.33333333%}.col-lg-2{-ms-flex-preferred-size:16.66666667%;flex-basis:16.66666667%;max-width:16.66666667%}.col-lg-3{-ms-flex-preferred-size:25%;flex-basis:25%;max-width:25%}.col-lg-4{-ms-flex-preferred-size:33.33333333%;flex-basis:33.33333333%;max-width:33.33333333%}.col-lg-5{-ms-flex-preferred-size:41.66666667%;flex-basis:41.66666667%;max-width:41.66666667%}.col-lg-6{-ms-flex-preferred-size:50%;flex-basis:50%;max-width:50%}.col-lg-7{-ms-flex-preferred-size:58.33333333%;flex-basis:58.33333333%;max-width:58.33333333%}.col-lg-8{-ms-flex-preferred-size:66.66666667%;flex-basis:66.66666667%;max-width:66.66666667%}.col-lg-9{-ms-flex-preferred-size:75%;flex-basis:75%;max-width:75%}.col-lg-10{-ms-flex-preferred-size:83.33333333%;flex-basis:83.33333333%;max-width:83.33333333%}.col-lg-11{-ms-flex-preferred-size:91.66666667%;flex-basis:91.66666667%;max-width:91.66666667%}.col-lg-12{-ms-flex-preferred-size:100%;flex-basis:100%;max-width:100%}.col-lg-offset-0{margin-left:0}.col-lg-offset-1{margin-left:8.33333333%}.col-lg-offset-2{margin-left:16.66666667%}.col-lg-offset-3{margin-left:25%}.col-lg-offset-4{margin-left:33.33333333%}.col-lg-offset-5{margin-left:41.66666667%}.col-lg-offset-6{margin-left:50%}.col-lg-offset-7{margin-left:58.33333333%}.col-lg-offset-8{margin-left:66.66666667%}.col-lg-offset-9{margin-left:75%}.col-lg-offset-10{margin-left:83.33333333%}.col-lg-offset-11{margin-left:91.66666667%}.start-lg{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:start}.center-lg{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}.end-lg{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:end}.top-lg{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}.middle-lg{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.bottom-lg{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}.around-lg{-ms-flex-pack:distribute;justify-content:space-around}.between-lg{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.first-lg{-webkit-box-ordinal-group:0;-ms-flex-order:-1;order:-1}.last-lg{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}}</style>
+  
+
+  
+
+  <link href="/index.xml" rel="alternate" type="application/rss+xml"
+    title="Windseeker&#39;s Blog">
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Bungee+Shade" rel="stylesheet">
+  
+  
+
+  
+  
+</head>
+
+
+<body>
+  <article class="post " id="article">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="site-header">
+          
+<header>
+  <div class="header-title">
+    <a href="/"
+      >Windseeker</a
+    >
+  </div>
+  <div class="header-subtitle"></div>
+</header>
+<div class="row end-md header-items">
+  
+  <div class="header-item">
+    <a href="/index.xml" target="_blank">RSS</a>
+  </div>
+  
+  <div class="header-item">
+    <a href="https://windseeker-chen.github.io/" target="_blank">About Me</a>
+  </div>
+  
+</div>
+<div class="row">
+   
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">560.和为K的子数组</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2024-11-13 14:27:27 CST">
+                13 Nov 2024
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          
+          <h1 id="方法一暴力法">方法一：暴力法</h1>
+<p>两次遍历所有的字串，判断字串是否符合条件</p>
+<h2 id="code">Code</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">subarraySum</span>(<span style="color:#a6e22e">nums</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">res</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">left</span>; <span style="color:#a6e22e">right</span> &lt; len(<span style="color:#a6e22e">nums</span>); <span style="color:#a6e22e">right</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">nums</span>[<span style="color:#a6e22e">right</span>]
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">k</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">res</span><span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="复杂度分析">复杂度分析</h2>
+<p>定义nums的长度为N</p>
+<h3 id="时间复杂度">时间复杂度</h3>
+<ol>
+<li>两次循环需要执行O(N*N)
+总时间复杂度为O(N^2)</li>
+</ol>
+<h3 id="空间复杂度">空间复杂度</h3>
+<p>空间复杂度为O(1)</p>
+<h1 id="方法二前缀和剪枝">方法二：前缀和剪枝</h1>
+<p>如果nums=[0,0,0],k=0.会发现内层循环存在重复计算，可以通过前缀和进行剪枝，即当左端点下标为0时，[0],[0,0],[0,0,0]的前缀和一致，在找到第一个右端点时直接退出内层循环</p>
+<ol>
+<li>计算数组前缀和，并保存相同前缀和的计数</li>
+<li>外层遍历字串左端点，内层遍历字串右端点
+<ol>
+<li>使用前缀和计算字串的和</li>
+<li>和等于k
+<ol>
+<li>累加当前前缀和相同计数</li>
+<li>结束内层循环</li>
+</ol>
+</li>
+<li>和不等于k，继续内层遍历</li>
+</ol>
+</li>
+<li>内层遍历结束时
+<ol>
+<li>将左端点的前缀和相同计数减1</li>
+<li>继续外层遍历</li>
+</ol>
+</li>
+</ol>
+<p>为什么内层遍历结束要将左端点的前缀和相同计数减1<br>
+为了防止重复计算，nums=[0,0,0],k=0为例，当左端点下标为1时，应该只统计坐标为[1],[1,2]的字串，但是当前前缀和等于0的下标有0，1，2，所以要在每一次内层循环结束后将当前左端点的前缀和相同计数减1保证不会重复计算。</p>
+<h2 id="code-1">Code</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">subarraySum</span>(<span style="color:#a6e22e">nums</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">res</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sumArray</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">int</span>, len(<span style="color:#a6e22e">nums</span>)<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sameSumIndex</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">idx</span>, <span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span>] <span style="color:#f92672">+</span> <span style="color:#a6e22e">num</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]]<span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">right</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">left</span>; <span style="color:#a6e22e">right</span> &lt; len(<span style="color:#a6e22e">nums</span>); <span style="color:#a6e22e">right</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">subSum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">right</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">left</span>]
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">subSum</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">k</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#a6e22e">res</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">right</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]]
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">left</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]]<span style="color:#f92672">--</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="复杂度分析-1">复杂度分析</h2>
+<p>定义nums的长度为N</p>
+<h3 id="时间复杂度-1">时间复杂度</h3>
+<ol>
+<li>计算前缀和需要N次</li>
+<li>外层循环需要N次
+<ol>
+<li>内存循环最坏需要N次，即所有前缀和都不相同
+总时间复杂度为O(N^2)</li>
+</ol>
+</li>
+</ol>
+<h3 id="空间复杂度-1">空间复杂度</h3>
+<ol>
+<li>前缀和数组长度为N</li>
+<li>前缀和相同计数hash最坏长度为N
+空间复杂度为O(N)</li>
+</ol>
+<h1 id="方法三前缀和优化">方法三：前缀和优化</h1>
+<p>方法二中使用两层遍历来遍历字串，我们可以转变思路，当遍历到下标为left的左端点是，我们需要下标为right的字串[left,right]，满足sumArray[right+1] - sumArray[left] = k，则sumArray[right+1] = k+sumArray[left],我们只需要累加前缀和等于k+sumArray[left]的相同计数就可以了</p>
+<h2 id="code-2">Code</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">subarraySum3</span>(<span style="color:#a6e22e">nums</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">res</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sumArray</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">int</span>, len(<span style="color:#a6e22e">nums</span>)<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sameSumIndex</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">idx</span>, <span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span>] <span style="color:#f92672">+</span> <span style="color:#a6e22e">num</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">idx</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]]<span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">sumArray</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">left</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">needSumRight</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">k</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">left</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">res</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">needSumRight</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumArray</span>[<span style="color:#a6e22e">left</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]]<span style="color:#f92672">--</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="复杂度分析-2">复杂度分析</h2>
+<p>定义nums的长度为N</p>
+<h3 id="时间复杂度-2">时间复杂度</h3>
+<ol>
+<li>计算前缀和需要N次</li>
+<li>遍历左端点需要N次
+总时间复杂度为O(N)</li>
+</ol>
+<h3 id="空间复杂度-2">空间复杂度</h3>
+<ol>
+<li>前缀和数组长度为N</li>
+<li>前缀和相同计数hash最坏长度为N+1
+空间复杂度为O(N)</li>
+</ol>
+<h1 id="方法四前缀和优化2看答案">方法四：前缀和优化2（看答案）</h1>
+<h2 id="说明">说明</h2>
+<p>方案三中，遍历左端点，这时候我们不知道右端点的前缀和有哪些，所以需要遍历2次，第一次计算出所有的前缀和，转换下思路，遍历右端点，此时可能的左端点都已经计算完前缀和了，只需要一次遍历。</p>
+<h2 id="code-3">Code</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">subarraySum</span>(<span style="color:#a6e22e">nums</span> []<span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">res</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sameSumIndex</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//init map for one entry that is equal with k
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sumRight</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">nums</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sumRight</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">num</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">needLeftSum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sumRight</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">k</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">res</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">needLeftSum</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sameSumIndex</span>[<span style="color:#a6e22e">sumRight</span>]<span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="复杂度分析-3">复杂度分析</h2>
+<p>定义nums的长度为N</p>
+<h3 id="时间复杂度-3">时间复杂度</h3>
+<ol>
+<li>遍历右端点需要N次
+总时间复杂度为O(N)</li>
+</ol>
+<h3 id="空间复杂度-3">空间复杂度</h3>
+<ol>
+<li>前缀和相同计数hash最坏长度为N+1
+空间复杂度为O(N)</li>
+</ol>
+
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+            <div class="post-tags">
+              <a href="/tags/prefix_sum/">
+                prefix_sum
+              </a>
+            </div>
+            
+            <div class="post-tags">
+              <a href="/tags/hash_table/">
+                hash_table
+              </a>
+            </div>
+            
+          </div>
+        </div>
+        
+          <div class="row">
+            <div class="col-xs-12">
+              
+            </div>
+          </div>
+
+          
+
+
+
+          
+          
+          <div style="height: 50px;"></div>
+          
+        
+
+        <div class="site-footer">
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  
+
+<script>
+  
+  
+    
+    
+  
+</script>
+
+  
+
+</body>
+
+</html>

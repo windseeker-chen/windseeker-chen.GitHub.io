@@ -293,7 +293,7 @@
 <ol>
 <li>p的hash需要O(M)</li>
 <li>substring存储hash需要O(M)
-总空间复杂度为O(2M)</li>
+总空间复杂度为O(N)</li>
 </ol>
 <h1 id="方法三优化异位词判断">方法三：优化异位词判断</h1>
 <p>上面一直使用hash是否相等来判断异位词，可以注意到题目描述中只包含小写字母，我们可以使用数组[26]int来替代hash，达到节省存储和提高比较速度(数组特性和编译器优化)</p>
@@ -340,8 +340,8 @@
 <li>外层遍历右端点，如果右端点的字符频率和p不一致，移动左端点直至一致</li>
 <li>当发现字串和p长度一致且字符频率一致，记入结果</li>
 </ol>
-<p>为什么只需要判断右端点？</p>
-<p>外层循环只改动了右端点，当右端点移动时，窗口内的其他字符频率没有变化，所以只需要关注新加入的右端点字符的频率</p>
+<p>为什么只需要判断右端点？<br>
+外层循环只改动了右端点，当右端点移动时，窗口内的其他字符频率没有变化，所以只需要关注新加入的右端点字符的频率</p>
 <h2 id="code-3">Code</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">findAnagrams</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">p</span> <span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">int</span> {
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">p</span>) &gt; len(<span style="color:#a6e22e">s</span>) {
